@@ -1,0 +1,12 @@
+
+Abra una consola en esta dirección y para compilar el programa ejecute:
+
+	$ make
+	
+Para correr el programa ejecute:
+
+	$ make run
+	
+Para llevar el programa al estado original (solo código fuente) ejecute:
+
+	$ make reset
