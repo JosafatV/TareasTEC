@@ -1,0 +1,1 @@
+cmd_/home/josav/Documents/Git/TareasTEC/Embebidos/hello.ko := ld -r -m elf_x86_64 -z max-page-size=0x200000 -T ./scripts/module-common.lds --build-id  -o /home/josav/Documents/Git/TareasTEC/Embebidos/hello.ko /home/josav/Documents/Git/TareasTEC/Embebidos/hello.o /home/josav/Documents/Git/TareasTEC/Embebidos/hello.mod.o ;  true
