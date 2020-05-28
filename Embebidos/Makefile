@@ -1,1 +1,1 @@
-obj-m := hello.o
+obj-m := memory.o
