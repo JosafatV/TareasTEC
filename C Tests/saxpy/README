@@ -1,0 +1,13 @@
+Por medio de make se compilan ambas vesiones de saxpy
+
+Para ejecutar saxpy.c puede utilizar
+	$ make slow
+
+Para ejecutar omp_saxpy.c puede utilizar:
+	$ make run
+
+Para ejecutar el código que cálcula la constante de euler:
+	$ make euler
+
+Para borrar los archivos creados para la ejecución (incluidos los ejecutables):
+	$ make reset
