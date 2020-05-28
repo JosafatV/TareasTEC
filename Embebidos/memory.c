@@ -44,20 +44,21 @@ char *memory_buffer;
 
 int memory_init(void) {
 	int result;
+	printk("<1> +++ memory module initiated +++\n");
 	/* Registering device */
 	result = register_chrdev(memory_major, "memory", &memory_fops);
 	if (result < 0) {
 		printk("<1>memory: cannot obtain major number %d\n", memory_major);
 		return result;
 	}
-	/* Allocating memory for the buffer */
+	/* Allocating 4 bytes of memory for the buffer */
 	memory_buffer = kmalloc(1, GFP_KERNEL);
 	if (!memory_buffer) {
 		result = -ENOMEM;
 		goto fail;
 	}
-	/*Set buffer to 0 by default */
-	memset(memory_buffer, 0, 1);
+	/*Set 4 bytes of buffer to 0 by default */
+	memset(memory_buffer, 0, 4);
 	printk("<1>Inserting memory module\n");
 	return 0;
 	fail:
