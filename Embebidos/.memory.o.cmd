@@ -850,6 +850,7 @@ deps_/home/josav09/Documents/Git/TareasTEC/Embebidos/memory.o := \
   include/linux/nfs_fs_i.h \
   include/linux/proc_fs.h \
     $(wildcard include/config/proc/pid/arch/status.h) \
+  include/linux/uaccess.h \
   arch/x86/include/asm/uaccess.h \
     $(wildcard include/config/x86/intel/usercopy.h) \
   arch/x86/include/asm/smap.h \
