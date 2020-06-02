@@ -16,10 +16,10 @@ INCLUDE_DIR = ../include/
 BIN_DIR = ../bin/
 
 main:
-	$(CC) -c $(SRC) -pthread
-	$(CC) -o $(BIN_DIR)$(EXE) $(SRC) $(LIBS) -I$(INCLUDE_DIR) -pthread
+		$(CC) -c $(SRC) -pthread
+		$(CC) -o $(BIN_DIR)$(EXE) $(SRC) $(LIBS) -I$(INCLUDE_DIR) -pthread
 
-reset:
-	rm ../bin/main
-	rm main.o
-	clear
+clean:
+		rm ../bin/main
+		rm main.o
+		clear

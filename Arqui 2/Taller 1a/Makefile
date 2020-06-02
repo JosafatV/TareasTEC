@@ -7,9 +7,6 @@ all:
 run:
 		bin/main
 
-rub:
-		bin/main
-
 reset:
 		rm -r bin
 		rm lib/*.o
