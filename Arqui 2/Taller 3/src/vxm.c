@@ -20,21 +20,22 @@ int main () {
 
 	int data = 0;
 
+	printf("+++ Matriz resultante: +++\n \t");
 	data = _mm_extract_epi32(r0, 3); 	printf("%d \t", data);
 	data = _mm_extract_epi32(r0, 2); 	printf("%d \t", data);
 	data = _mm_extract_epi32(r0, 1); 	printf("%d \t", data);
 	data = _mm_extract_epi32(r0, 0); 	printf("%d \t", data);
-	printf("\n");
+	printf("\n \t");
 	data = _mm_extract_epi32(r1, 3); 	printf("%d \t", data);
 	data = _mm_extract_epi32(r1, 2); 	printf("%d \t", data);
 	data = _mm_extract_epi32(r1, 1); 	printf("%d \t", data);
 	data = _mm_extract_epi32(r1, 0); 	printf("%d \t", data);
-	printf("\n");
+	printf("\n \t");
 	data = _mm_extract_epi32(r2, 3); 	printf("%d \t", data);
 	data = _mm_extract_epi32(r2, 2); 	printf("%d \t", data);
 	data = _mm_extract_epi32(r2, 1); 	printf("%d \t", data);
 	data = _mm_extract_epi32(r2, 0); 	printf("%d \t", data);
-	printf("\n");
+	printf("\n \t");
 	data = _mm_extract_epi32(r3, 3); 	printf("%d \t", data);
 	data = _mm_extract_epi32(r3, 2); 	printf("%d \t", data);
 	data = _mm_extract_epi32(r3, 1); 	printf("%d \t", data);

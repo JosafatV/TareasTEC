@@ -1,13 +1,16 @@
-Por medio de make se compilan ambas vesiones de saxpy
+Instituto Tecnológico de Costa Rica
+Ingeniería en Computadores
+Arquitectura de Computadores II
 
-Para ejecutar saxpy.c puede utilizar
-	$ make slow
+Taller 3: Extensión SIMD: SSEX
+Josafat Vargas Gamboa 
+2013030892
 
-Para ejecutar omp_saxpy.c puede utilizar:
+Para compilar el código utilice
+	$ make
+
+Para ejecutar todos los ejercicios prácticos puede utilizar:
 	$ make run
 
-Para ejecutar el código que cálcula la constante de euler:
-	$ make euler
-
-Para borrar los archivos creados para la ejecución (incluidos los ejecutables):
-	$ make reset
+Para limpiar la carpeta y volver al estado inicial:
+	$make reset
