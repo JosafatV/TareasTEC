@@ -9,8 +9,11 @@ Josafat Vargas Gamboa
 Para compilar el código utilice
 	$ make
 
-Para ejecutar todos los ejercicios prácticos puede utilizar:
-	$ make run
+Para ejecutar el ejercicio 1:
+	$ make compare
+
+Para ejecuar el ejercicio 2:
+	$ make vxm
 
 Para limpiar la carpeta y volver al estado inicial:
 	$make reset

@@ -8,8 +8,10 @@ EXE_SIMD = vxm
 all: 
 		mkdir -p bin && make -C $(LIB_DIR) && make -C $(SRC_DIR)
 
-run:
+compare:
 		$(BIN_DIR)$(EXE_COMP)
+
+vxm:
 		$(BIN_DIR)$(EXE_SIMD)
 
 reset:
