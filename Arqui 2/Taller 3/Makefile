@@ -6,7 +6,7 @@ EXE_COMP = compare
 EXE_SIMD = vxm
 
 all: 
-		mkdir -p bin && make -C $(LIB_DIR) && make -C $(SRC_DIR)
+		mkdir -p bin && make -C $(SRC_DIR)
 
 compare:
 		$(BIN_DIR)$(EXE_COMP)
@@ -16,5 +16,4 @@ vxm:
 
 reset:
 		rm -r bin/
-		rm lib/*.a
 		clear
