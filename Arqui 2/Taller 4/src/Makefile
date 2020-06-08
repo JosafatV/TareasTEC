@@ -33,6 +33,8 @@ INCLUDE_DIR = ../include/
 BIN_DIR = ../bin/
 
 all:
+		make saxpy
+		make omp_saxpy
 		make euler
 		make omp_euler
 		make harmonic
