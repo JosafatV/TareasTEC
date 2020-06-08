@@ -20,6 +20,11 @@ EXE_EOMP = euler_omp
 SRC_H = harmonic.c
 EXE_H = harmonic
 
+SRC_HOMP = harmonic_omp.c
+EXE_HOMP = harmonic_omp
+
+FLAGS = -fopenmp 
+
 LINKEDLIST_LIB = lib_linked_list.a
 LIBS = $(LIB_DIR)$(LINKEDLIST_LIB) 
 
@@ -29,31 +34,25 @@ BIN_DIR = ../bin/
 
 all:
 		make harmonic
+		make omp_harmonic
 
 saxpy:
-		$(CC) -c $(SRC_S) -fopenmp
-		$(CC) -o $(BIN_DIR)$(EXE_S) $(SRC_S) $(LIBS) -I$(INCLUDE_DIR) -fopenmp
-		rm *.o
+		$(CC) -o $(BIN_DIR)$(EXE_S) $(FLAGS) $(SRC_S) $(LIBS) -I$(INCLUDE_DIR) 
 
 omp_saxpy:
-		$(CC) -c $(SRC_SOMP) -fopenmp
-		$(CC) -o $(BIN_DIR)$(EXE_SOMP) $(SRC_SOMP) $(LIBS) -I$(INCLUDE_DIR) -fopenmp
-		rm *.o
+		$(CC) -o $(BIN_DIR)$(EXE_SOMP) $(FLAGS) $(SRC_SOMP) $(LIBS) -I$(INCLUDE_DIR) 
 		
 euler:
-		$(CC) -c $(SRC_E) -fopenmp
-		$(CC) -o $(BIN_DIR)$(EXE_E) $(SRC_E) $(LIBS) -I$(INCLUDE_DIR) -fopenmp
-		rm *.o
+		$(CC) -o $(BIN_DIR)$(EXE_E) $(FLAGS) $(SRC_E) $(LIBS) -I$(INCLUDE_DIR) 
 		
 omp_euler:
-		$(CC) -c $(SRC_EOMP) -fopenmp
-		$(CC) -o $(BIN_DIR)$(EXE_EOMP) $(SRC_EOMP) $(LIBS) -I$(INCLUDE_DIR) -fopenmp
-		rm *.o	
+		$(CC) -o $(BIN_DIR)$(EXE_EOMP) $(FLAGS) $(SRC_EOMP) $(LIBS) -I$(INCLUDE_DIR) 
 		
 harmonic:
-		$(CC) -c $(SRC_H) -fopenmp -lm
-		$(CC) -o $(BIN_DIR)$(EXE_H) $(SRC_H) $(LIBS) -I$(INCLUDE_DIR) -fopenmp -lm
-		rm *.o
+		$(CC) -o $(BIN_DIR)$(EXE_H) $(FLAGS) $(SRC_H) $(LIBS) -I$(INCLUDE_DIR) -lm 
+
+omp_harmonic:
+		$(CC) -o $(BIN_DIR)$(EXE_HOMP) $(FLAGS) $(SRC_HOMP) $(LIBS) -I$(INCLUDE_DIR) -lm 
 
 clean:
 		rm ../bin/$(EXE)

@@ -7,6 +7,13 @@ int cpu_count() {
 	return count;
 }
 
+
+double calculate_error (double obt) {
+	double known = 2.718281828459045;
+	double error_absoluto = known-obt;
+	double error_relativo_p = error_absoluto/known*100;
+}
+
 int main(int argc, char **argv) {
 
 	for (int steps=100; steps<10000; steps*=10) {
@@ -18,15 +25,14 @@ int main(int argc, char **argv) {
 		
 		for (int i=1; i<steps; i++){
 			double factorial = 1;
-			#pragma omp parallel for reduction(*: factorial)
+			#pragma omp parallel for reduction (*: factorial)
 			for (int f=1; f<i; f++) {
 				factorial *= f;
 			}
 
 			e += 1/factorial;
 		}
-		//double error_absoluto = known_e-e;
-		//double error_relativo_p = error_absoluto/known_e*100;
+		//double err = calculate_error(e);
 
 		printf("Euler's number with %d steps in %f seconds is: %.15f \n \n", steps, omp_get_wtime()-start, e);
 	}
