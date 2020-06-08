@@ -33,6 +33,8 @@ INCLUDE_DIR = ../include/
 BIN_DIR = ../bin/
 
 all:
+		make euler
+		make omp_euler
 		make harmonic
 		make omp_harmonic
 
@@ -53,8 +55,3 @@ harmonic:
 
 omp_harmonic:
 		$(CC) -o $(BIN_DIR)$(EXE_HOMP) $(FLAGS) $(SRC_HOMP) $(LIBS) -I$(INCLUDE_DIR) -lm 
-
-clean:
-		rm ../bin/$(EXE)
-		rm ../bin/$(EXE_OMP)
-		clear

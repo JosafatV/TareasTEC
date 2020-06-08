@@ -17,6 +17,7 @@ double calculate_error (double obt) {
 	double known = 0.577215664901532;
 	double error_absoluto = known-obt;
 	double error_relativo_p = error_absoluto/known*100;
+	return error_relativo_p;
 }
 
 // Calculate harmonic number: Hn. The infinite sum for Hn - ln(n) converges to the Euler-Mascheroni cte
