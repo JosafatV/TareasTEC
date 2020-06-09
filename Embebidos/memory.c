@@ -94,7 +94,7 @@ ssize_t memory_read(struct file *filp, char *buf,
 		/* Transfering data to user space */
 		// Copy to buf (user) from memory_buffer (kernel), 4 bytes
 		copy_to_user(buf,memory_buffer,4);
-		return 1;
+		return 4;
 	} else {
 		return 0;
 	}
@@ -103,12 +103,13 @@ ssize_t memory_read(struct file *filp, char *buf,
 ssize_t memory_write( struct file *filp, const char *buf, 
 					  size_t count, loff_t *f_pos) {
 	// Copy to memory_buffer (kernel), from buf (user), 4 bytes
-	copy_from_user(memory_buffer,buf,4);
-	return 1;
+	unsigned long uncopied_data = copy_from_user(memory_buffer,buf,4);
+	// return actual amount of copied bits
+	return 4-uncopied_data;
 }
 
 
 
-
+//https://www.oreilly.com/library/view/linux-device-drivers/0596000081/ch03s08.html
 
 

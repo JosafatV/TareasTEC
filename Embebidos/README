@@ -1,20 +1,43 @@
 To make the module:
-	make -C /usr/src/linux-headers-$(uname -r) M=$(pwd modules)
- 
+	$ make -C /usr/src/linux-headers-$(uname -r) M=$(pwd modules)
+	
+	
+	
+	
+	
+Create nod for the module
+	$ sudo mknod memory c 60 0
+	
+Change permissiions of the nod
+	$ sudo chmod 666 /dev/memory
+	 
+	 
+	 
  
 To add the module:
-	sudo insmod memory.ko
+	$ sudo insmod memory.ko
+
+
 
 
 To test write the module:
-	echo -n Hell >/dev/memory 
- 
+	$ echo -n Hell >/dev/memory 
  
 To test read the module:
-	cat /dev/memory
+	$ cat /dev/memory
+ 
+ 
+ 
  
 To remove the module:
-	sudo rmmod memory.ko
+	$ sudo rmmod memory.ko
 	
+
+
+
+Check modules
+	$ lsmod
 	
+Read messages regarding the log
+	$ dmesg | tail
 
