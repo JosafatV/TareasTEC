@@ -8,7 +8,7 @@ EX = export
 SRC_S = saxpy.c
 EXE_S = saxpy
 
-SRC_SOMP = omp_saxpy.c
+SRC_SOMP = omp_saxpy_sse.c
 EXE_SOMP = omp_saxpy
 
 SRC_E = euler.c

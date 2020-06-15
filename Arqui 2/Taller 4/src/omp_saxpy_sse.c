@@ -47,11 +47,11 @@ int main () {
 	for (int i = 0; i<length; i+=2) {
 		__m128i simd_x = _mm_set_epi32(0, get_at(x, i), 0, get_at(x, i+1));
 		__m128i ax = _mm_mul_epu32(simd_x, simd_alpha); 
-		__m128i sy = _mm_set_epi32(0, get_at(y, i), 0, get_at(y, i+1));
-		__m128i res = _mm_add_epi32(ax, sy);
-		int rez = get_at(x, i)*alpha + get_at(y, i);
-		set_at(z, i, rez);
-		#pragma omp wall
+		__m128i simd_y = _mm_set_epi32(0, get_at(y, i), 0, get_at(y, i+1));
+		__m128i res = _mm_add_epi32(ax, simd_y);
+
+		set_at(z, i, _mm_extract_epi32(res, 2));
+		set_at(z, i+1, _mm_extract_epi32(res, 0));
 	}
 
 	#pragma omp single
