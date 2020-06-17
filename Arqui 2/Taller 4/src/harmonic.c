@@ -20,7 +20,7 @@ double calculate_error (double obt) {
 
 // Calculate harmonic number: Hn. The infinite sum for Hn - ln(n) converges to the Euler-Mascheroni cte
 int main () {
-	for (long n=1000; n<10000000000; n*=10){
+	for (long long n=1000; n<10000000000; n*=10){
 		double start = omp_get_wtime();
 		double hn = 0;
 		
@@ -31,7 +31,7 @@ int main () {
 		double e_m = -log(n)+hn;
 		double err = calculate_error(e_m);
 
-		printf("Euler-Mascheroni cosntant with %ld iterations error is: %.15f\n", n, err);
+		printf("Euler-Mascheroni cosntant with %lld iterations error is: %.15f\n", n, err);
 		printf("Execution took %f seconds\n", omp_get_wtime()-start);
 	}
 	return 0;
