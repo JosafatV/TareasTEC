@@ -1,13 +1,40 @@
-Por medio de make se compilan ambas vesiones de saxpy
+Se recomienda usar la versión 20 de android ndk, a la hora de crear este código la versión 21 falla al hacer el link con libomp.so
 
-Para ejecutar saxpy.c puede utilizar
-	$ make slow
+A ambas versiones de SAXPY se les agregó la biblioteca de linked_list para no tener que compilar por aparte este código.
 
-Para ejecutar omp_saxpy.c puede utilizar:
-	$ make run
+Siguiendo las instrucciones de la especificación, que android_ndk está instalado en opt, mueva los contenidos de esta carpeta ahí y modifique Android.mk y Application.mk dependiendo de cuál código quiera ejecutar.
 
-Para ejecutar el código que cálcula la constante de euler:
+En Android.mk modifique:
+
+	LOCAL_MODULE := [file]
+	LOCAL_SRC_FILES := src/[file].c
+
+En Application.mk modifique:
+
+	APP_MODULES      := [file] cpufeatures
+
+donde [file] puede ser:
+	saxpy
+	euler
+	euler_omp
+	harmonic
+	harmonic_omp
+	
+Como se explica en el documento con el rendimiento, no se consigue ejecutar saxpy_omp en Android
+
+
+
+
+El código adicional permite la ejecución en x86. Para la ejecucuión en x86 puede utilizar los Makefile:
+
+Para compilar todo código utilice:
+	$ make
+	
+Para ejecutar el programa correspondiente use:
+	$ make saxpy_omp
+	$ make saxpy
 	$ make euler
+	$ make euler_omp
+	$ make harmonic
+	$ make harmonic_omp
 
-Para borrar los archivos creados para la ejecución (incluidos los ejecutables):
-	$ make reset

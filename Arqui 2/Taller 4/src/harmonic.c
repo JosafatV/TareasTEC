@@ -2,10 +2,8 @@
 #include <stdlib.h>
 #include <pthread.h>
 #include <unistd.h>
-#include <time.h>
 #include <omp.h>
 #include <math.h>
-#include "../include/linked_list.h"
 
 int cpu_count() {
 	int count = omp_get_num_procs();

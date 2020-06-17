@@ -5,6 +5,7 @@
 #include <time.h>
 #include <omp.h>
 #include <emmintrin.h>
+#include <smmintrin.h>
 #include "../include/linked_list.h"
 
 int cpu_count() {
