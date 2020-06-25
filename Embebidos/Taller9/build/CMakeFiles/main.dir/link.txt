@@ -1,0 +1,1 @@
+/usr/bin/cc    CMakeFiles/main.dir/src/main.c.o  -o main -Wl,-rpath,/home/josav/Documents/Git/TareasTEC/Embebidos/Taller9/build/lib: lib/libprand.so /usr/lib/gcc/x86_64-linux-gnu/7/libgomp.so -lpthread 

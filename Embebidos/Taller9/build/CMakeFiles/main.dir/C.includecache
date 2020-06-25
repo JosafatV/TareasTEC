@@ -1,0 +1,18 @@
+#IncludeRegexLine: ^[ 	]*[#%][ 	]*(include|import)[ 	]*[<"]([^">]+)([">])
+
+#IncludeRegexScan: ^.*$
+
+#IncludeRegexComplain: ^$
+
+#IncludeRegexTransform: 
+
+../include/libprand.h
+
+/home/josav/Documents/Git/TareasTEC/Embebidos/Taller9/src/main.c
+stdio.h
+-
+unistd.h
+-
+libprand.h
+-
+
