@@ -1,1 +1,0 @@
-/usr/bin/cc -fPIC   -shared -Wl,-soname,libprand.so -o libprand.so CMakeFiles/prand.dir/libprand.c.o 

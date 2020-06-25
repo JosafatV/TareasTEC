@@ -2,7 +2,6 @@ cmake_minimum_required (VERSION 3.10)
 
 #define the project
 project (libprand)
-find_package(OpenMP REQUIRED)
 
 #add lib subdirectory to build
 add_subdirectory (lib)
@@ -15,7 +14,7 @@ include_directories(${PROJECT_SOURCE_DIR}/lib)
 add_executable (main src/main.c)
 
 #link against required libraries
-target_link_libraries(main PRIVATE OpenMP::OpenMP_C prand)
+target_link_libraries(main prand)
 
 #install the binary
 install (TARGETS main DESTINATION bin)

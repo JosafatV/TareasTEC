@@ -1,0 +1,17 @@
+
+To create the cmake stuff do:
+
+	# mkdir build && cd build
+
+	# cmake ../ -DCMAKE_INSTALL_PREFIX:PATH=/home/josav/Documents/Git/TareasTEC/Embebidos/Taller9/build/usr -DCMAKE_TOOLCHAIN_FILE=/home/josav/Documents/Git/TareasTEC/Embebidos/Taller9/crosscompile.cmake
+
+Then build the program:
+
+	# make
+
+The resulting files will be in the build directory and build/lib directory. They should look like the ones provied in bin
+
+To use the library fist 
+
+initialize the driver?
+initialize the clock?
