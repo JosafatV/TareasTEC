@@ -1,9 +1,10 @@
 #include <stdio.h>
-#include <libprand.h>
+#include <unistd.h>
+#include "../include/libprand.h"
 
 int main() {
 	printf("+++ Initializing +++\n");
-	chrono();
+	//chrono();
 
 // Check timer is not running
 	printf("  Generated: %d \n", generate_num());
@@ -31,8 +32,8 @@ int main() {
 	printf("  Generated: %d \n", generate_num());
 	usleep(500);	
 
-	printf("+++ Terminating +++");
-	chrono();
+	printf("+++ Terminating +++\n");
+	//chrono();
 
     return 0;
 }
