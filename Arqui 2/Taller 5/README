@@ -1,0 +1,5 @@
+Platform Vendor Speific OpenCL implementation
+Conetex Selected to work together
+Device: Physical devices supporting OpenCL
+Host: Client calling code (you)
+Kernel: Blueprint of the function which does the work
