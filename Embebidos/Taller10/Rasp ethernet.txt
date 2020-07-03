@@ -1,0 +1,24 @@
+Change the interface config file
+
+	sudo nano etc/network/interfaces
+	
+Change the eth0 interface to:
+
+auto eth0
+iface eth0 inet static
+	address 192.168.0.123
+	netmask 255.255.255.0
+	network 192.168.0.1
+	gateway 192.168.0.1
+	
+This sets the IP of the Rasp to static.
+
+
+
+Connect to Raspberry Pi 2
+
+	ssh root@192.168.0.123
+	
+Pass files to Rasp
+
+	scp <source> <destiny>

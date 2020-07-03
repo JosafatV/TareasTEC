@@ -3,22 +3,35 @@ source /opt/poky/2.3.4/environment-setup-cortexa7hf-neon-vfpv4-poky-linux-gnueab
 $CC -o gpio gpio.c
 
 
+Access the Rapsberry Pi through ethernet
+
+	# ssh root@192.168.0.123
+
+Copy files to the rasp (copies at "/")
+
+	# sudo scp wgpio root@192.168.0.123:/wgpio
+
+
+
+	======== TODO ======== 
 
 7. Evaluación
-Para la evaluación de este tutorial se deberá crear un driver nuevo de GPIO, que permita:
+leer y desplegar el nivel lógico del GPIO
 
-configurar el GPIO en cualquiera de todos los modos disponibles (entrada, salida o funciones
-especiales), leer y desplegar el modo actual, leer y desplegar el nivel lógico del GPIO, y escribir
-un valor al GPIO. Esto se debe realizar para al menos 8 GPIOs diferentes, tanto de manera
+Esto se debe realizar para al menos 8 GPIOs diferentes, tanto de manera
 individual (para un GPIO especı́fico) como grupal (para los 8 GPIOs simultáneamente), en
-el mismo controlador . Deberá abstraer las funcionalidades del controlador en una biblioteca.
-Además deberá implementar un archivo de prueba que verifique el funcionamiento de la biblio-
-teca del controlador. Debe seguir la estructura estandar (lib, src, etc), ası́ como utilizar algún
-gestor de compilación (autotools, cmake, etc).
+el mismo controlador . 
 
+Deberá abstraer las funcionalidades del controlador en una biblioteca.
+Además deberá implementar un archivo de prueba que verifique el funcionamiento de la biblio-
+teca del controlador.
+
+ Debe seguir la estructura estandar (lib, src, etc), ası́ como utilizar algún
+gestor de compilación (autotools, cmake, etc).
 
 8. Entrega
 
 Para la entrega, se deberá subir un archivamiento al tecDigital con nombre Nombre Apellido -
 tar.gz, que incluya todos los códigos fuentes, ası́ como los pasos para la compilación.
+
 

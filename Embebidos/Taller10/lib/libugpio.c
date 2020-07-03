@@ -3,6 +3,7 @@
 #include <fcntl.h> //file ops
 #include <unistd.h> //usleep
 #include <stdio.h> //printf
+#include <libugpio.h>
 
 // Constants
 #define INPUT_MODE 0
@@ -16,10 +17,6 @@
 
 #define HI_VAL 1
 #define LO_VAL 0
-
-void gpioInitPtrs();
-void gpioSetMode(int mode, int pin);
-void gpioWrite(unsigned char bit, int pin);
 
 	// Static base
 static unsigned GPIO_BASE = 0x3f200000;
@@ -40,6 +37,7 @@ void gpioInitPtrs();
 void gpioSetMode(int mode, int pin);
 void gpioWrite(unsigned char bit, int pin);
 int gpioRead(int pin);
+int gpioCurrentMode(int pin);
 
 // Initialize pointers: performs memory mapping, exits if mapping fails
 void gpioInitPtrs() {
@@ -56,8 +54,8 @@ void gpioInitPtrs() {
 		errx(1, "Error during mapping GPIO");
 
 	// Set reg pointers for function select
-	gpfsel1 = gpfsel0 + 0x1; // offset 0x04  // reg with pins 17
-	gpfsel2 = gpfsel0 + 0x2; // offset 0x08  // reg with pins 22, 27
+	gpfsel1 = gpfsel0 + 0x1; // offset 0x04
+	gpfsel2 = gpfsel0 + 0x2; // offset 0x08
 
 	// Set reg pointers for output set
 	gpset0 = gpfsel0 + 0x7; // offset 0x1C
@@ -196,57 +194,4 @@ int gpioCurrentMode (int pin) {
 		return -1;
 		break;
 	}
-}
-
-int main(int argc, char const *argv[]) {
-		// map memory
-	gpioInitPtrs();
-
-		// setup
-	gpioSetMode(OUTPUT_MODE, 2);
-	gpioSetMode(OUTPUT_MODE, 17);
-	gpioSetMode(OUTPUT_MODE, 21);
-	gpioSetMode(OUTPUT_MODE, 27);
-	gpioSetMode(INPUT_MODE, 3);
-	gpioSetMode(INPUT_MODE, 4);
-	gpioSetMode(INPUT_MODE, 5);
-	gpioSetMode(INPUT_MODE, 6);
-	usleep(500000); // turn to-look-delay
-
-	gpioCurrentMode(3);
-	gpioCurrentMode(27);
-
-		// toggle GPIO17 - GREEN
-	gpioWrite(HI_VAL, 17);
-	usleep(1000000);
-	gpioWrite(LO_VAL, 17);
-
-		// toggle GPIO27 - YELLOW
-	gpioWrite(HI_VAL, 27);
-	usleep(1000000);
-	gpioWrite(LO_VAL, 27);
-
-		// toggle GPIO2 - RED
-	gpioWrite(HI_VAL, 2);
-	usleep(1000000);
-	gpioWrite(LO_VAL, 2);
-
-		// light GPIO - BLUE
-
-		// read test
-	int read_3 = -1;
-	int read_4 = -1;
-	int read_5 = -1;
-	int read_6 = -1;
-	printf (" pin 3 | pin 4 | pin 5 | pin 6 \n");
-	while (1) {
-		read_3 = gpioRead(3);
-		read_4 = gpioRead(4);
-		read_3 = gpioRead(5);
-		read_4 = gpioRead(6);
-		usleep(1000000);
-		printf ("   %d  |   %d  |   %d  |   %d   \n", read_3, read_4, read_5, read_6);
-	}
-
-	return 0;
 }
