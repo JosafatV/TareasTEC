@@ -4,7 +4,6 @@
 #ifdef __APPLE__
 #include <OpenCL/opencl.h>
 #else
-#define CL_USE_DEPRECATED_OPENCL_1_2_APIS
 #include <CL/cl.h>
 #endif
 // What's up with this? :O
@@ -12,21 +11,19 @@
  
 int main(void) {
     // Create the input vectors
-    int i;
+    int i, j;
     const int LIST_SIZE = 1024;
-	const int ALPHA = 29; // rand();
 	// change to RANDOM values
 	const int X_val = 1;
-	const int Y_val = 10;
-    int *A = (int*)malloc(sizeof(int)*LIST_SIZE);
-    int *X = (int*)malloc(sizeof(int)*LIST_SIZE);
-    int *Y = (int*)malloc(sizeof(int)*LIST_SIZE);
+    int *S = (int*)malloc(sizeof(int)*LIST_SIZE*LIST_SIZE);
+    int *X = (int*)malloc(sizeof(int)*LIST_SIZE*LIST_SIZE);
 
     // Init the vectors 
     for(i = 0; i < LIST_SIZE; i++) {
-        A[i] = ALPHA;
-        X[i] = X_val;
-		Y[i] = Y_val;
+		for (j = 0; j < LIST_SIZE; j++) {
+			S[i] = 1;
+			X[i] = i;
+		}
     }
  
     // Load the kernel source code into the array source_str
@@ -34,7 +31,7 @@ int main(void) {
     char *source_str;
     size_t source_size;
     // Read the kernel
-    fp = fopen("saxpy.cl", "r");
+    fp = fopen("matrixmul.cl", "r");
     if (!fp) {
         fprintf(stderr, "Failed to load kernel.\n");
         exit(1);
@@ -60,22 +57,18 @@ int main(void) {
     cl_command_queue command_queue = clCreateCommandQueue(context, device_id, 0, &ret);
  
     // Create memory buffers on the device for each vector 
-    cl_mem z_mem_obj = clCreateBuffer(context, CL_MEM_READ_ONLY, 
+    cl_mem r_mem_obj = clCreateBuffer(context, CL_MEM_READ_ONLY, 
             LIST_SIZE * sizeof(int), NULL, &ret);
-    cl_mem a_mem_obj = clCreateBuffer(context, CL_MEM_READ_ONLY,
+    cl_mem s_mem_obj = clCreateBuffer(context, CL_MEM_READ_ONLY,
             LIST_SIZE * sizeof(int), NULL, &ret);
     cl_mem x_mem_obj = clCreateBuffer(context, CL_MEM_READ_ONLY, 
             LIST_SIZE * sizeof(int), NULL, &ret);
-    cl_mem y_mem_obj = clCreateBuffer(context, CL_MEM_WRITE_ONLY, 
-            LIST_SIZE * sizeof(int), NULL, &ret);
  
     // Copy the input lists to their respective memory buffers
-    ret = clEnqueueWriteBuffer(command_queue, a_mem_obj, CL_TRUE, 0,
-            LIST_SIZE * sizeof(int), A, 0, NULL, NULL);
+    ret = clEnqueueWriteBuffer(command_queue, s_mem_obj, CL_TRUE, 0,
+            LIST_SIZE * sizeof(int), S, 0, NULL, NULL);
     ret = clEnqueueWriteBuffer(command_queue, x_mem_obj, CL_TRUE, 0, 
             LIST_SIZE * sizeof(int), X, 0, NULL, NULL);
-    ret = clEnqueueWriteBuffer(command_queue, y_mem_obj, CL_TRUE, 0, 
-            LIST_SIZE * sizeof(int), Y, 0, NULL, NULL);
  
     //3. Create a program from the kernel source
     cl_program program = clCreateProgramWithSource(context, 1, 
@@ -85,13 +78,12 @@ int main(void) {
     ret = clBuildProgram(program, 1, &device_id, NULL, NULL, NULL);
  
     //4. Create the OpenCL kernel
-    cl_kernel kernel = clCreateKernel(program, "saxpy", &ret);
+    cl_kernel kernel = clCreateKernel(program, "matrixmul", &ret);
  
     // Set the arguments of the kernel
-    ret = clSetKernelArg(kernel, 0, sizeof(cl_mem), (void *)&z_mem_obj);
-    ret = clSetKernelArg(kernel, 1, sizeof(cl_mem), (void *)&a_mem_obj);
+    ret = clSetKernelArg(kernel, 0, sizeof(cl_mem), (void *)&r_mem_obj);
+    ret = clSetKernelArg(kernel, 1, sizeof(cl_mem), (void *)&s_mem_obj);
     ret = clSetKernelArg(kernel, 2, sizeof(cl_mem), (void *)&x_mem_obj);
-    ret = clSetKernelArg(kernel, 3, sizeof(cl_mem), (void *)&y_mem_obj);
  
     //5. Execute the OpenCL kernel on the list
     size_t global_item_size = LIST_SIZE; // Process the entire lists
@@ -99,29 +91,34 @@ int main(void) {
     ret = clEnqueueNDRangeKernel(command_queue, kernel, 1, NULL, 
             &global_item_size, &local_item_size, 0, NULL, NULL); // queue more than 1, 1D
  
-    // Read the memory buffer on the device to the local output variable Z
-    int *Z = (int*)malloc(sizeof(int)*LIST_SIZE);
-    ret = clEnqueueReadBuffer(command_queue, x_mem_obj, CL_TRUE, 0, 
-            LIST_SIZE * sizeof(int), Z, 0, NULL, NULL);
+    // Read the memory buffer on the device to the local ouptut variable Z
+    int *R = (int*)malloc(sizeof(int)*LIST_SIZE);
+    ret = clEnqueueReadBuffer(command_queue, r_mem_obj, CL_TRUE, 0, 
+            LIST_SIZE * sizeof(int), R, 0, NULL, NULL);
  
     // Display the result to the screen
-    //for(i = 0; i < LIST_SIZE; i++)
-    //    printf("%d * %d + %d = %d\n", A[i], X[i], Y[i], Z[i]);
+    for(i = 0; i < LIST_SIZE; i++) {
+		printf ("| ");
+		for (j=0; j < LIST_SIZE; j++) {
+			printf ("%d | ", R[i]);
+		}
+		printf ("\n");
+	}
  
     //6. Clean up
     ret = clFlush(command_queue);
     ret = clFinish(command_queue);
     ret = clReleaseKernel(kernel);
     ret = clReleaseProgram(program);
-    ret = clReleaseMemObject(z_mem_obj);
-    ret = clReleaseMemObject(a_mem_obj);
+    ret = clReleaseMemObject(r_mem_obj);
+    ret = clReleaseMemObject(s_mem_obj);
     ret = clReleaseMemObject(x_mem_obj);
     ret = clReleaseCommandQueue(command_queue);
     ret = clReleaseContext(context);
-    free(Z);
-    free(A);
+    free(R);
+    free(S);
 	free(X);
-	free(Y);
+	
     // Be nice
     printf("Hola mundo desde OpenCL\n");
     return 0;

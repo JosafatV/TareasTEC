@@ -38,15 +38,16 @@ int main() {
  
     // get all platforms
     if (clGetPlatformIDs(0, NULL, &platformCount) != CL_SUCCESS) {
-        printf("Unable to get platform IDs\n");
+        printf("Unable to get platform IDs 1\n");
         exit(1);
     }
     platforms = (cl_platform_id*) malloc(sizeof(cl_platform_id) * platformCount);
     if (clGetPlatformIDs(platformCount, platforms, NULL) != CL_SUCCESS) {
-        printf("Unable to get platform IDs\n");
+        printf("Unable to get platform IDs 2\n");
         exit(1);
     }
  
+	printf("Platforms found: %d\n", platformCount);
     for (i = 0; i < platformCount; i++) {
         printf("%i. Platform\n", i+1);
 

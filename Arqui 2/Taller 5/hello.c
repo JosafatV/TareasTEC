@@ -4,11 +4,45 @@
 #ifdef __APPLE__
 #include <OpenCL/opencl.h>
 #else
+#define CL_USE_DEPRECATED_OPENCL_1_2_APIS
 #include <CL/cl.h>
 #endif
 // What's up with this? :O
 #define MAX_SOURCE_SIZE (0x100000)
- 
+
+void test_ret (cl_int ret, char* context){
+	printf("%s: ", context);
+	switch(ret) {
+	case CL_SUCCESS:
+		printf("+++ Succesful ++\n");
+		break;
+	case CL_INVALID_PLATFORM:
+		printf("+++ Invalid platform +++\n");
+		break;
+	case CL_INVALID_PROPERTY:
+		printf("+++ Invalid property +++\n");
+		break;
+	case CL_INVALID_VALUE:
+		printf("+++ Invalid value +++\n");
+		break;
+	case CL_INVALID_DEVICE:
+		printf("+++ Invalid device +++\n");
+		break;
+	case CL_DEVICE_NOT_AVAILABLE:
+		printf("+++ Device not available +++\n");
+		break;
+	case CL_OUT_OF_RESOURCES:
+		printf("+++ Out of resources +++\n");
+		break;
+	case CL_OUT_OF_HOST_MEMORY:
+		printf("+++ Out of host memory +++\n");
+		break;
+	default:
+		printf("+++ Unknown error +++\n");
+		break;
+	}
+}
+
 int main(void) {
     // Create the two input vectors
     int i;
@@ -41,12 +75,25 @@ int main(void) {
     cl_device_id device_id = NULL;   
     cl_uint ret_num_devices;
     cl_uint ret_num_platforms;
+
     cl_int ret = clGetPlatformIDs(1, &platform_id, &ret_num_platforms);
-    ret = clGetDeviceIDs( platform_id, CL_DEVICE_TYPE_GPU, 1, 
-            &device_id, &ret_num_devices);
+	test_ret(ret, "Creating platform");
+
+    ret = clGetDeviceIDs( platform_id, CL_DEVICE_TYPE_GPU, 1, &device_id, &ret_num_devices);
+	test_ret(ret, "Getting Device ID");
  
     //2. Create an OpenCL context
     cl_context context = clCreateContext( NULL, 1, &device_id, NULL, NULL, &ret);
+	test_ret(ret, "Creating context");
+
+	// Check device type
+	cl_device_type dev_type;
+	clGetDeviceInfo(device_id, CL_DEVICE_TYPE, sizeof(dev_type), &dev_type, NULL);	
+	if (dev_type == CL_DEVICE_TYPE_GPU) {
+    	printf("I'm 100%% sure this device is a GPU\n");
+	} else {
+		printf("I'm not 100%% sure this device is a GPU\n");
+	}
  
     // Create a command queue
     cl_command_queue command_queue = clCreateCommandQueue(context, device_id, 0, &ret);
