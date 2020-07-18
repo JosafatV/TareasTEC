@@ -5,19 +5,6 @@
 #include <stdio.h> //printf
 #include <libugpio.h>
 
-// Constants
-#define INPUT_MODE 0
-#define OUTPUT_MODE 1
-#define ALT0_MODE 4
-#define ALT1_MODE 5
-#define ALT2_MODE 6
-#define ALT3_MODE 7
-#define ALT4_MODE 3
-#define ALT5_MODE 2
-
-#define HI_VAL 1
-#define LO_VAL 0
-
 	// Static base
 static unsigned GPIO_BASE = 0x3f200000;
 
@@ -31,13 +18,6 @@ volatile unsigned int * gpclr0;
 volatile unsigned int * gpclr1;
 volatile unsigned int * gplev0;
 volatile unsigned int * gplev1;
-
-	// Function prototypes
-void gpioInitPtrs();
-void gpioSetMode(int mode, int pin);
-void gpioWrite(unsigned char bit, int pin);
-int gpioRead(int pin);
-int gpioCurrentMode(int pin);
 
 // Initialize pointers: performs memory mapping, exits if mapping fails
 void gpioInitPtrs() {
@@ -54,8 +34,8 @@ void gpioInitPtrs() {
 		errx(1, "Error during mapping GPIO");
 
 	// Set reg pointers for function select
-	gpfsel1 = gpfsel0 + 0x1; // offset 0x04
-	gpfsel2 = gpfsel0 + 0x2; // offset 0x08
+	gpfsel1 = gpfsel0 + 0x1; // offset 0x04  // reg with pins 17
+	gpfsel2 = gpfsel0 + 0x2; // offset 0x08  // reg with pins 22, 27
 
 	// Set reg pointers for output set
 	gpset0 = gpfsel0 + 0x7; // offset 0x1C
@@ -111,11 +91,13 @@ void gpioWrite(unsigned char bit, int pin) {
 
 /** Reads the status of a specific GPIO pin
  * \param pin which pin to read (check datasheet, not physical) 
+ * \return the value read in standard HI_VAL or LO_VAL
  */
 int gpioRead(int pin){
 	// create mask to isolate bit
 	int mask = 0;
 	int ret = 0;
+	// extract pin status from register
 	if (pin<32){
 		mask = 1 << pin;
 		ret = (int) gplev0 & mask;
@@ -123,11 +105,11 @@ int gpioRead(int pin){
 		mask = 1 << 32-pin;
 		ret = (int) gplev1 & mask;
 	}
-
+	//return standard value
 	if (ret>0){
-		return 1;
+		return HI_VAL;
 	} else {
-		return 0;
+		return LO_VAL;
 	}
 }
 
@@ -139,11 +121,8 @@ int gpioCurrentMode (int pin) {
 	int mask = 7;
 	if (pin < 10) {
 		mask = mask << pin*3;
-		printf("mask is: %d\n", mask);
 		mode = *gpfsel0 & mask;
-		printf("isolated is: %d\n", mode);
 		mode = mode >> pin*3;
-		printf("mode is: %d\n", mode);
 	} else if (pin < 20) {
 		mask = mask << (pin-10)*3;
 		mode = *gpfsel1 & mask;
@@ -195,3 +174,4 @@ int gpioCurrentMode (int pin) {
 		break;
 	}
 }
+

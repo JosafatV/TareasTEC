@@ -1,7 +1,18 @@
-source /opt/poky/2.3.4/environment-setup-cortexa7hf-neon-vfpv4-poky-linux-gnueabi
+	======== Cross-compiling with cmake ======== 
+	
+mkdir build && cd build
 
-$CC -o gpio gpio.c
+cmake ../ -DCMAKE_INSTALL_PREFIX:PATH=/home/josav09/Documents/Git/TareasTEC/Embebidos/Taller10/build/usr -DCMAKE_TOOLCHAIN_FILE=/home/josav09/Documents/Git/TareasTEC/Embebidos/Taller10/crosscompile.cmake
 
+make
+
+copy the exe file "ugpio_tests" to the Rasp
+
+copy the library "libugpio.so" file to /usr/lib in the Rasp
+
+
+
+	======== Copy files to the Raspberry Pi ======== 
 
 Access the Rapsberry Pi through ethernet
 
@@ -9,29 +20,24 @@ Access the Rapsberry Pi through ethernet
 
 Copy files to the rasp (copies at "/")
 
-	# sudo scp wgpio root@192.168.0.123:/wgpio
+	# sudo scp wgpio root@192.168.0.123:/ugpio_tests
+	
+	
+	
+	======== Configure the Raspberry Pi's network ======== 
+	
+Change the interface config file
 
+	sudo nano etc/network/interfaces
+	
+Change the eth0 interface to:
 
-
-	======== TODO ======== 
-
-7. Evaluación
-leer y desplegar el nivel lógico del GPIO
-
-Esto se debe realizar para al menos 8 GPIOs diferentes, tanto de manera
-individual (para un GPIO especı́fico) como grupal (para los 8 GPIOs simultáneamente), en
-el mismo controlador . 
-
-Deberá abstraer las funcionalidades del controlador en una biblioteca.
-Además deberá implementar un archivo de prueba que verifique el funcionamiento de la biblio-
-teca del controlador.
-
- Debe seguir la estructura estandar (lib, src, etc), ası́ como utilizar algún
-gestor de compilación (autotools, cmake, etc).
-
-8. Entrega
-
-Para la entrega, se deberá subir un archivamiento al tecDigital con nombre Nombre Apellido -
-tar.gz, que incluya todos los códigos fuentes, ası́ como los pasos para la compilación.
-
+auto eth0
+iface eth0 inet static
+	address 192.168.0.123
+	netmask 255.255.255.0
+	network 192.168.0.1
+	gateway 192.168.0.1
+	
+This sets the IP of the Rasp to static.
 

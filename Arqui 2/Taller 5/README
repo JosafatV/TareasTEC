@@ -4,4 +4,4 @@ Device: Physical devices supporting OpenCL
 Host: Client calling code (you)
 Kernel: Blueprint of the function which does the work
 
-gcc -o foo_exe foo_src.c -lOpenCL
+gcc -o foo_exe foo_src.c -lOpenCL -fopenmp

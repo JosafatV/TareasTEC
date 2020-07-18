@@ -118,6 +118,9 @@ int gpioRead(int pin){
 	// create mask to isolate bit
 	int mask = 0;
 	int ret = 0;
+	
+	printf("Register: %d\n", gplev1);
+	
 	if (pin<32){
 		mask = 1 << pin;
 		ret = (int) gplev0 & mask;
@@ -127,9 +130,9 @@ int gpioRead(int pin){
 	}
 
 	if (ret>0){
-		return 1;
+		return HI_VAL;
 	} else {
-		return 0;
+		return LO_VAL;
 	}
 }
 
@@ -141,11 +144,8 @@ int gpioCurrentMode (int pin) {
 	int mask = 7;
 	if (pin < 10) {
 		mask = mask << pin*3;
-		printf("mask is: %d\n", mask);
 		mode = *gpfsel0 & mask;
-		printf("isolated is: %d\n", mode);
 		mode = mode >> pin*3;
-		printf("mode is: %d\n", mode);
 	} else if (pin < 20) {
 		mask = mask << (pin-10)*3;
 		mode = *gpfsel1 & mask;
@@ -201,11 +201,11 @@ int gpioCurrentMode (int pin) {
 int main(int argc, char const *argv[]) {
 		// map memory
 	gpioInitPtrs();
-
+	
 		// setup
 	gpioSetMode(OUTPUT_MODE, 2);
 	gpioSetMode(OUTPUT_MODE, 17);
-	gpioSetMode(OUTPUT_MODE, 21);
+	gpioSetMode(OUTPUT_MODE, 22);
 	gpioSetMode(OUTPUT_MODE, 27);
 	gpioSetMode(INPUT_MODE, 3);
 	gpioSetMode(INPUT_MODE, 4);
@@ -213,8 +213,14 @@ int main(int argc, char const *argv[]) {
 	gpioSetMode(INPUT_MODE, 6);
 	usleep(500000); // turn to-look-delay
 
-	gpioCurrentMode(3);
+	gpioCurrentMode(2);
+	gpioCurrentMode(17);
+	gpioCurrentMode(22);
 	gpioCurrentMode(27);
+	gpioCurrentMode(3);
+	gpioCurrentMode(4);
+	gpioCurrentMode(5);
+	gpioCurrentMode(5);
 
 		// toggle GPIO17 - GREEN
 	gpioWrite(HI_VAL, 17);
@@ -232,6 +238,9 @@ int main(int argc, char const *argv[]) {
 	gpioWrite(LO_VAL, 2);
 
 		// light GPIO - BLUE
+	gpioWrite(HI_VAL, 22);
+	usleep(1000000);
+	gpioWrite(LO_VAL, 22);
 
 		// read test
 	int read_3 = -1;
@@ -242,10 +251,10 @@ int main(int argc, char const *argv[]) {
 	while (1) {
 		read_3 = gpioRead(3);
 		read_4 = gpioRead(4);
-		read_3 = gpioRead(5);
-		read_4 = gpioRead(6);
+		read_5 = gpioRead(5);
+		read_6 = gpioRead(6);
 		usleep(1000000);
-		printf ("   %d  |   %d  |   %d  |   %d   \n", read_3, read_4, read_5, read_6);
+		//printf ("   %d   |   %d  |   %d  |   %d   \n", read_3, read_4, read_5, read_6);
 	}
 
 	return 0;

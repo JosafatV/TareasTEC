@@ -1,5 +1,6 @@
 #include <stdio.h>
 #include <stdlib.h>
+#include <omp.h>
 // Include OpenCL headers 
 #ifdef __APPLE__
 #include <OpenCL/opencl.h>
@@ -7,13 +8,13 @@
 #define CL_USE_DEPRECATED_OPENCL_1_2_APIS
 #include <CL/cl.h>
 #endif
-// What's up with this? :O
+// the kernel is loaded as a str/char* this defines the maximum size it can have
 #define MAX_SOURCE_SIZE (0x100000)
  
 int main(void) {
     // Create the input vectors
     int i;
-    const int LIST_SIZE = 1024;
+    const int LIST_SIZE = 10000;
 	const int ALPHA = 29; // rand();
 	// change to RANDOM values
 	const int X_val = 1;
@@ -28,6 +29,8 @@ int main(void) {
         X[i] = X_val;
 		Y[i] = Y_val;
     }
+
+	double start = omp_get_wtime();
  
     // Load the kernel source code into the array source_str
     FILE *fp;
@@ -103,6 +106,8 @@ int main(void) {
     int *Z = (int*)malloc(sizeof(int)*LIST_SIZE);
     ret = clEnqueueReadBuffer(command_queue, x_mem_obj, CL_TRUE, 0, 
             LIST_SIZE * sizeof(int), Z, 0, NULL, NULL);
+
+	printf("+++ SAXPY with LIST_SIZE %d took: %.8f +++ \n", LIST_SIZE, omp_get_wtime()-start);
  
     // Display the result to the screen
     //for(i = 0; i < LIST_SIZE; i++)
@@ -123,6 +128,6 @@ int main(void) {
 	free(X);
 	free(Y);
     // Be nice
-    printf("Hola mundo desde OpenCL\n");
+    printf("SAXPY with OpenCL completed\n");
     return 0;
 }

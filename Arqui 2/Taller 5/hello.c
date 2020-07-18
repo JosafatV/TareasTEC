@@ -7,14 +7,14 @@
 #define CL_USE_DEPRECATED_OPENCL_1_2_APIS
 #include <CL/cl.h>
 #endif
-// What's up with this? :O
+// the kernel is loaded as a str/char* this defines the maximum size it can have
 #define MAX_SOURCE_SIZE (0x100000)
 
 void test_ret (cl_int ret, char* context){
 	printf("%s: ", context);
 	switch(ret) {
 	case CL_SUCCESS:
-		printf("+++ Succesful ++\n");
+		printf("+++ Succesful +++\n");
 		break;
 	case CL_INVALID_PLATFORM:
 		printf("+++ Invalid platform +++\n");

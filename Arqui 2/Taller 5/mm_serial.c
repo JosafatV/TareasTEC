@@ -1,5 +1,6 @@
 #include <stdio.h>
 #include <stdlib.h>
+#include <omp.h>
 
 void print_matrix(int * Mx, int ROW, int COL) {
 	int i = 0;
@@ -31,8 +32,8 @@ void matrix_mul (int* A, int* B, int* C, int ROW, int COL) {
 
 int main () {
 	int i, j;
-	const int ROW = 4;
-	const int COL = 4;
+	const int ROW = 10000;
+	const int COL = ROW;
 	int val = 10;
 	
     int *A = (int*)malloc(sizeof(int)*ROW*COL);
@@ -48,12 +49,16 @@ int main () {
 		}
 	}
 	
-	print_matrix(A, ROW, COL);
-	print_matrix(B, ROW, COL);
+	//print_matrix(A, ROW, COL);
+	//print_matrix(B, ROW, COL);
+
+	double start = omp_get_wtime();
 	
 	matrix_mul(A,B,C, ROW, COL);
-	
-	print_matrix(C, ROW, COL);
+
+	printf("+++ MX_MUL_SERIAL with SIZE %dx%d took: %.7f +++ \n", ROW,COL, omp_get_wtime()-start);
+ 	
+	//print_matrix(C, ROW, COL);
 
 	
 	return 0;

@@ -11,13 +11,13 @@ include_directories(${PROJECT_SOURCE_DIR}/include)
 include_directories(${PROJECT_SOURCE_DIR}/lib)
 
 # add the executable
-add_executable (main src/main.c)
+add_executable (ugpio_tests src/main.c)
 
 #link against required libraries
-target_link_libraries(main ugpio)
+target_link_libraries(ugpio_tests ugpio)
 
 #install the binary
-install (TARGETS main DESTINATION bin)
+install (TARGETS ugpio_tests DESTINATION bin)
 
 #package source generation
 set(MAJOR "0")
