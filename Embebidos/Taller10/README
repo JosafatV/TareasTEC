@@ -2,6 +2,8 @@
 	
 mkdir build && cd build
 
+. /opt/poky/2.5.1/environment-setup-cortexa7hf-neon-vfpv4-poky-linux-gnueabi -c
+
 cmake ../ -DCMAKE_INSTALL_PREFIX:PATH=/home/josav09/Documents/Git/TareasTEC/Embebidos/Taller10/build/usr -DCMAKE_TOOLCHAIN_FILE=/home/josav09/Documents/Git/TareasTEC/Embebidos/Taller10/crosscompile.cmake
 
 make
@@ -18,12 +20,12 @@ Access the Rapsberry Pi through ethernet
 
 	# ssh root@192.168.0.123
 
-Copy files to the rasp (copies at "/")
+Copy the files in build to the rasp (copies at "/")
 
-	# sudo scp wgpio root@192.168.0.123:/ugpio_tests
-	
-	
-	
+	# sudo scp ugpio_tests root@192.168.0.123:/ugpio_tests
+
+
+
 	======== Configure the Raspberry Pi's network ======== 
 	
 Change the interface config file
