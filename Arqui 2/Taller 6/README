@@ -1,0 +1,22 @@
+Copy the file to /mirror
+
+	sudo cp saxpy_mpi.c /mirror/saxpy_mpi.c
+
+Compile the file with 
+
+	mpicc saxpi_mpi.c -o saxpi_mpi
+	
+Execute the file with 
+
+	mpiexec -n 8 -f machinefile ./saxpi_mpi
+	
+	-n 8 defines the amount of processes
+	-f machinefiles defines the addresses for the nodes and the split of the processes
+	
+Once the program is running wou'll be prompt to define 2 things
+	
+	Length of the vector
+	Value of alpha
+
+
+For dependencies of the program follow the specification for this workshop

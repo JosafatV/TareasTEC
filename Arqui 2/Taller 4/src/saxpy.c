@@ -34,7 +34,7 @@ int get_length(Node_t* head);
 
 int main () {
 	int alpha = rand()%21+5;
-	int length = 20000;
+	int length = 10000;
 	Node_t* x = NULL;
 	Node_t* y = NULL;
 	Node_t* z = NULL;
