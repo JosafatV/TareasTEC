@@ -19,7 +19,7 @@ int array2Y[max_rows];
 
 int main(int argc, char **argv) {
 	MPI_Status status;
-	int my_id, root_process, ierr, i, num_rows, num_procs, alpha, 
+	int my_id, root_process, ierr, i, j, num_rows, num_procs, alpha, 
 		an_id, num_rows_to_receive, avg_rows_per_process, 
 		sender, num_rows_received, start_row, end_row, num_rows_to_send;
 
@@ -69,7 +69,7 @@ int main(int argc, char **argv) {
 		// distribute a portion of the vector to each child process
 
 		for(an_id = 1; an_id < num_procs; an_id++) {
-			start_row = an_id*avg_rows_per_process + 1;
+			start_row = an_id*avg_rows_per_process;// + 1;
 			end_row   = (an_id + 1)*avg_rows_per_process;
 
 			if((num_rows - end_row) < avg_rows_per_process)
@@ -98,26 +98,26 @@ int main(int argc, char **argv) {
 		// Receive the partial results from every process
 		for(an_id = 1; an_id < num_procs; an_id++) {
 			
-			ierr = MPI_Recv( &array2Z, num_rows_to_send+1, MPI_INT, MPI_ANY_SOURCE,
+			ierr = MPI_Recv(&array2Z, num_rows_to_send+1, MPI_INT, MPI_ANY_SOURCE,
 				return_data_tag, MPI_COMM_WORLD, &status);
 
 			sender = status.MPI_SOURCE;
-
-			printf("Received data from process %i\n", sender);
-
+			
 			// Merge results
+			j = 0;
 			for(i = sender*avg_rows_per_process; i < sender*avg_rows_per_process+avg_rows_per_process; i++) {
-				//printf("Joining index %d of value %d\n", i, array2Z[i]);
-				arrayZ[i] = array2Z[i];
+				//data comes at the beginning of the array, j points to this data, i to where it should go
+				arrayZ[i] = array2Z[j];
+				j++;
 			}
 		}
 		
 		printf("+++ SAXPY with LIST_SIZE %d took: %.7f +++ \n", num_rows, omp_get_wtime()-start);
 
-		/* Display the final result to the screen
+		// Display the final result to the screen
 		for(i = 0; i < num_rows; i++) {
 			printf("%d * %d + %d = %d\n", arrayA[i], arrayX[i], arrayY[i], arrayZ[i]);
-		}*/
+		}
 
 	} else {
 
@@ -141,11 +141,6 @@ int main(int argc, char **argv) {
 	 for(i = 0; i < num_rows_received; i++) {
 		array2Z[i] = array2A[i] * array2X[i] + array2Y[i];
 	 }
-	 
- 	/* Display the partial result DEBUG
-	for(i = 0; i < num_rows_received; i++) {
-		printf("%d * %d + %d = %d\n", array2A[i], array2X[i], array2Y[i], array2Z[i]);
-	}*/
 
 	 // Send partial result back to master
 	 ierr = MPI_Send( &array2Z[0], num_rows_received, MPI_INT, root_process, 

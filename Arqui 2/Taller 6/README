@@ -4,7 +4,7 @@ Copy the file to /mirror
 
 Compile the file with 
 
-	mpicc saxpi_mpi.c -o saxpi_mpi
+	mpicc saxpi_mpi.c -o saxpi_mpi -fopenmp
 	
 Execute the file with 
 
