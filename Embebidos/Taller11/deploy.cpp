@@ -1,51 +1,64 @@
 #include "systemc.h"
 
-void payment_mod::fsm_status () {
+// SystemC module for odd
+SC_MODULE (deploy_state) {
+	sc_in<bool> input;
+	sc_out<bool> output;
+	sc_uint<4> status;
+
+	void update_status () {
 		int my_status = 0;
-		int status = (int) prev_state.read();
 
 		// Update status if input is 1
 		if (input.read() == 1) {
 			switch (status) {
 				case 0:
-					next_state.write(1);
+					status = 1;
 					break;
 				case 1:
-					next_state.write(3);
+					status = 3;
 					break;
 				case 2:
-					next_state.write(3);
+					status = 3;
 					break;
 				case 7:
-					next_state.write(0);
+					status = 0;
 					break;			
 				default:
-					next_state.write(7);
+					status = 7;
 					break;
 				}
 		// Update status if input is 0
 		} else {
 			switch (status) {
 				case 0:
-					next_state.write(2);
+					status = 2;
 					break;
 				case 1:
-					next_state.write(4);
+					status = 4;
 					break;
 				case 2:
-					next_state.write(4);
+					status = 4;
 					break;		
 				default:
-					next_state.write(7);
+					status = 7;
 					break;
 				}
 		}
 
-		if (prev_state.read() == my_status) {
+		if (status == my_status) {
 			// It's me! Tell the world!
-			cout << "Machine is in state %d" << endl;
+		cout << "Machine is in state " << my_status << endl;
 			output.write(1);
 		} else {
 			output.write(0);
 		}
 	}
+
+	SC_CTOR(deploy_state) {
+		cout << "Added machine state 0" << endl;
+		SC_METHOD(update_status);
+		sensitive << input;
+	}
+
+};

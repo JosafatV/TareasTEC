@@ -1,7 +1,7 @@
 #include "systemc.h"
 #include "nand.h"
-SC_MODULE(exor2)
-{
+
+SC_MODULE(exor2) {
   sc_in<bool> A, B;
   sc_out<bool> F;
 
