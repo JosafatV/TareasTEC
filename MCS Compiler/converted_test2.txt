@@ -1,0 +1,28 @@
+# Configuration file for DS3 Simulator
+# Created with MCS Compiler 
+ 
+job_name test2
+add_new_tasks 6
+ffst 0
+ffst HEAD
+ffst earliest start 0 deadline 10000 input_vol 0 output_vol 1000
+ssnd 1 0
+ssnd earliest start 0 deadline 10000 input_vol 1000 output_vol 2000
+ttrd 2 1
+ttrd earliest start 0 deadline 10000 input_vol 2000 output_vol 1000
+ffth 3 2
+ffth earliest start 0 deadline 10000 input_vol 1000 output_vol 500
+vvth 4 2
+vvth earliest start 0 deadline 10000 input_vol 1000 output_vol 500
+ssth 5 4 3
+ssth TAIL
+ssth earliest start 0 deadline 10000 input_vol 1000 output_vol 0
+
+# Communication volume for the tasks that have dependencies
+
+comm_vol 0 1 100
+comm_vol 1 2 100
+comm_vol 2 3 100
+comm_vol 2 4 100
+comm_vol 4 5 100
+comm_vol 3 5 100
